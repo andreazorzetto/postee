@@ -100,3 +100,12 @@ persistentVolume:
   ##
   # storageClass: "-"
   # existingClaim: ""
+
+ui:
+  enabled: true
+  service:
+    type: LoadBalancer
+#    portSsl: 8443
+#    targetPortSsl: 8445
+    port: 8083
+    targetPort: 8083

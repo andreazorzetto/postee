@@ -63,6 +63,22 @@ spec:
               mountPath: {{ .Values.persistentVolume.mountPath }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.ui.enabled }}
+        - name: posteeui
+          image: andreazorzetto/posteeui:76de8ce
+          env:
+            - name: POSTEE_UI_CFG
+              value: /config/cfg.yaml
+            - name: POSTEE_UI_PORT
+              value: "8083"
+            - name: POSTEE_UI_UPDATE_URL
+              value: http://{{ include "postee.fullname" . }}:{{ .Values.service.targetPort }}
+          volumeMounts:
+            - name: {{ $fullName }}-cfg
+              mountPath: /config/
+            - name: {{ $fullName }}-db
+              mountPath: /server/database
+        {{- end }}
       volumes:
         - configMap:
             name: {{ $fullName }}-cfg
